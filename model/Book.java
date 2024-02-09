@@ -130,6 +130,16 @@ public class Book extends EntityBase
 		}
 	}
 
+	public void display()
+	{
+		System.out.println(this.toString());
+	}
+
+	public String toString()
+	{
+		return persistentState.toString();
+	}
+
 	protected void initializeSchema(String tableName)
 	{
 		if (mySchema == null)

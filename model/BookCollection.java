@@ -24,20 +24,6 @@ public class BookCollection extends EntityBase {
     }
 
     public void findBooksOlderThanDate(String year) throws SQLException {
-        String query = "SELECT * FROM " + myTableName + " WHERE pubYear > " + year;
-        Vector<Properties> result = getSelectQueryResult(query);
-        if (result != null) {
-			for (int i = 0; i < result.size(); i++) {
-				Properties nextBookData = result.elementAt(i);
-				Book book = new Book(nextBookData);
-				if (book != null) {
-					bookList.add(book);
-				}
-			}
-		}
-    }
-
-    public void findBooksNewerThanDate(String year) throws SQLException {
         String query = "SELECT * FROM " + myTableName + " WHERE pubYear < " + year;
         Vector<Properties> result = getSelectQueryResult(query);
         if (result != null) {
@@ -51,8 +37,22 @@ public class BookCollection extends EntityBase {
 		}
     }
 
+    public void findBooksNewerThanDate(String year) throws SQLException {
+        String query = "SELECT * FROM " + myTableName + " WHERE pubYear > " + year;
+        Vector<Properties> result = getSelectQueryResult(query);
+        if (result != null) {
+			for (int i = 0; i < result.size(); i++) {
+				Properties nextBookData = result.elementAt(i);
+				Book book = new Book(nextBookData);
+				if (book != null) {
+					bookList.add(book);
+				}
+			}
+		}
+    }
+
     public void findBooksWithTitleLike(String title) throws SQLException {
-        String query = "SELECT * FROM " + myTableName + " WHERE bookTitle REGEXP " + title;
+        String query = "SELECT * FROM " + myTableName + " WHERE bookTitle LIKE '%" + title + "%';";
         Vector<Properties> result = getSelectQueryResult(query);
         if (result != null) {
 			for (int i = 0; i < result.size(); i++) {
@@ -66,7 +66,7 @@ public class BookCollection extends EntityBase {
     }
 
     public void findBooksWithAuthorLike(String author) throws SQLException {
-        String query = "SELECT * FROM " + myTableName + " WHERE author REGEXP " + author;
+        String query = "SELECT * FROM " + myTableName + " WHERE author LIKE '%" + author + "%';";
         Vector<Properties> result = getSelectQueryResult(query);
         if (result != null) {
             for (int i = 0; i < result.size(); i++) {

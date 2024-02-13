@@ -121,7 +121,7 @@ public class Patron extends EntityBase
 				// insert
 				Integer accountNumber = insertAutoIncrementalPersistentState(mySchema, persistentState);
 				persistentState.setProperty("patronId", "" + accountNumber.intValue());
-				updateStatusMessage = "Patron data for new patron : " +  persistentState.getProperty("patronId") + " installed successfully in database!";
+				updateStatusMessage = "Patron data for new patron : " +  persistentState.getProperty("name") + " installed successfully in database!";
 			}
 		}
 		catch (SQLException ex)

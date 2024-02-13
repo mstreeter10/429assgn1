@@ -30,7 +30,7 @@ class TestAssgn1{
 
         Scanner s = new Scanner(System.in);
 
-        /*Properties book1Properties = new Properties();
+        Properties book1Properties = new Properties();
         System.out.println("Enter book title: ");
         book1Properties.setProperty("bookTitle", s.nextLine());
         System.out.println("Enter author: ");
@@ -76,7 +76,7 @@ class TestAssgn1{
         System.out.println("Enter year to find books published before: ");
         bc.findBooksOlderThanDate(s.nextLine());
         System.out.println("Result: ");
-        bc.display(); */
+        bc.display();
 
         PatronCollection pc = new PatronCollection();
         System.out.println("Enter a date (YYYY-MM-DD) to find patrons born after: ");

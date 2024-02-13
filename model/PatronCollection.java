@@ -18,7 +18,7 @@ public class PatronCollection extends EntityBase
 	public void findPatronsOlderThan(String date) throws IllegalArgumentException
 	{
 		if (date == null || !Pattern.matches("^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3(0|1))$", date)) throw new IllegalArgumentException();
-		String query = "SELECT * FROM " + myTableName + " WHERE (dateOfBirth > " + date + " );";
+		String query = "SELECT * FROM " + myTableName + " WHERE dateOfBirth < '" + date + "'";
 		Vector<Properties> result = getSelectQueryResult(query);
 		if (result != null) populatePatronList(result);
 		else System.out.println("Found no results for partons older than " + date);
@@ -27,7 +27,7 @@ public class PatronCollection extends EntityBase
 	public void findPatronsYoungerThan(String date) throws IllegalArgumentException
 	{
 		if (date == null || !Pattern.matches("^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3(0|1))$", date)) throw new IllegalArgumentException();
-		String query = "SELECT * FROM " + myTableName + " WHERE (dateOfBirth < " + date + " );";
+		String query = "SELECT * FROM " + myTableName + " WHERE dateOfBirth > '" + date + "'";
 		Vector<Properties> result = getSelectQueryResult(query);
 		if (result != null) populatePatronList(result);
 		else System.out.println("Found no results for partons younger than " + date);

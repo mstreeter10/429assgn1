@@ -121,7 +121,7 @@ public class Book extends EntityBase
 				// insert
 				Integer accountNumber = insertAutoIncrementalPersistentState(mySchema, persistentState);
 				persistentState.setProperty("bookId", "" + accountNumber.intValue());
-				updateStatusMessage = "Book data for new book : " +  persistentState.getProperty("bookId") + " installed successfully in database!";
+				updateStatusMessage = "Book data for new book : " +  persistentState.getProperty("bookTitle") + " installed successfully in database!";
 			}
 		}
 		catch (SQLException ex)

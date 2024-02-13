@@ -24,7 +24,7 @@ public class BookCollection extends EntityBase {
     }
 
     public void findBooksOlderThanDate(String year) throws SQLException {
-        String query = "SELECT * FROM " + myTableName + " WHERE pubYear < " + year;
+        String query = "SELECT * FROM " + myTableName + " WHERE pubYear < '" + year + "'";
         Vector<Properties> result = getSelectQueryResult(query);
         if (result != null) {
 			for (int i = 0; i < result.size(); i++) {
@@ -38,7 +38,7 @@ public class BookCollection extends EntityBase {
     }
 
     public void findBooksNewerThanDate(String year) throws SQLException {
-        String query = "SELECT * FROM " + myTableName + " WHERE pubYear > " + year;
+        String query = "SELECT * FROM " + myTableName + " WHERE pubYear > '" + year + "'";
         Vector<Properties> result = getSelectQueryResult(query);
         if (result != null) {
 			for (int i = 0; i < result.size(); i++) {

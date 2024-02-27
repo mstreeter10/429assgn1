@@ -37,13 +37,13 @@ import java.util.Enumeration;
 
 // project imports
 import impresario.IModel;
-import model.Account;
-import model.AccountCollection;
+import model.Book;
+import model.BookCollection;
 
 //==============================================================================
 public class BookCollectionView extends View
 {
-	protected TableView<BookTableModel> tableOfAccounts;
+	protected TableView<BookTableModel> tableOfBooks;
 	protected Button cancelButton;
 	protected Button submitButton;
 
@@ -53,7 +53,7 @@ public class BookCollectionView extends View
 	//--------------------------------------------------------------------------
 	public BookCollectionView(IModel wsc)
 	{
-		super(wsc, "AccountCollectionView");
+		super(wsc, "BookCollectionView");
 
 		// create a container for showing the contents
 		VBox container = new VBox(10);
@@ -84,23 +84,23 @@ public class BookCollectionView extends View
 		ObservableList<BookTableModel> tableData = FXCollections.observableArrayList();
 		try
 		{
-			AccountCollection accountCollection = (AccountCollection)myModel.getState("AccountList");
+			BookCollection bookCollection = (BookCollection)myModel.getState("BookList");
 
-	 		Vector entryList = (Vector)accountCollection.getState("Accounts");
+	 		Vector entryList = (Vector)bookCollection.getState("Books");
 			Enumeration entries = entryList.elements();
 
 			while (entries.hasMoreElements() == true)
 			{
-				Account nextAccount = (Account)entries.nextElement();
-				Vector<String> view = nextAccount.getEntryListView();
+				Book nextBook = (Book)entries.nextElement();
+				// Vector<String> view = nextBook.getEntryListView();
 
-				// add this list entry to the list
-				BookTableModel nextTableRowData = new BookTableModel(view);
-				tableData.add(nextTableRowData);
+				// // add this list entry to the list
+				// BookTableModel nextTableRowData = new BookTableModel(view);
+				// tableData.add(nextTableRowData);
 				
 			}
 			
-			tableOfAccounts.setItems(tableData);
+			tableOfBooks.setItems(tableData);
 		}
 		catch (Exception e) {//SQLException e) {
 			// Need to handle this exception
@@ -136,24 +136,24 @@ public class BookCollectionView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         
-        Text prompt = new Text("LIST OF ACCOUNTS");
+        Text prompt = new Text("LIST OF BOOKS");
         prompt.setWrappingWidth(350);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-		tableOfAccounts = new TableView<BookTableModel>();
-		tableOfAccounts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		tableOfBooks = new TableView<BookTableModel>();
+		tableOfBooks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 	
-		TableColumn accountNumberColumn = new TableColumn("Account Number") ;
-		accountNumberColumn.setMinWidth(100);
-		accountNumberColumn.setCellValueFactory(
-	                new PropertyValueFactory<BookTableModel, String>("accountNumber"));
+		TableColumn bookNumberColumn = new TableColumn("Book Number") ;
+		bookNumberColumn.setMinWidth(100);
+		bookNumberColumn.setCellValueFactory(
+	                new PropertyValueFactory<BookTableModel, String>("bookNumber"));
 		
-		TableColumn accountTypeColumn = new TableColumn("Account Type") ;
-		accountTypeColumn.setMinWidth(100);
-		accountTypeColumn.setCellValueFactory(
-	                new PropertyValueFactory<BookTableModel, String>("accountType"));
+		TableColumn bookTypeColumn = new TableColumn("Book Type") ;
+		bookTypeColumn.setMinWidth(100);
+		bookTypeColumn.setCellValueFactory(
+	                new PropertyValueFactory<BookTableModel, String>("bookType"));
 		  
 		TableColumn balanceColumn = new TableColumn("Balance") ;
 		balanceColumn.setMinWidth(100);
@@ -165,33 +165,33 @@ public class BookCollectionView extends View
 		serviceChargeColumn.setCellValueFactory(
 	                new PropertyValueFactory<BookTableModel, String>("serviceCharge"));
 
-		tableOfAccounts.getColumns().addAll(accountNumberColumn, 
-				accountTypeColumn, balanceColumn, serviceChargeColumn);
+		tableOfBooks.getColumns().addAll(bookNumberColumn, 
+				bookTypeColumn, balanceColumn, serviceChargeColumn);
 
-		tableOfAccounts.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event)
-			{
-				if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
-					processAccountSelected();
-				}
-			}
-		});
+		// tableOfBooks.setOnMousePressed(new EventHandler<MouseEvent>() {
+		// 	@Override
+		// 	public void handle(MouseEvent event)
+		// 	{
+		// 		if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
+		// 			processBookSelected();
+		// 		}
+		// 	}
+		// });
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setPrefSize(115, 150);
-		scrollPane.setContent(tableOfAccounts);
+		scrollPane.setContent(tableOfBooks);
 
 		submitButton = new Button("Submit");
- 		submitButton.setOnAction(new EventHandler<ActionEvent>() {
+ 		// submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	clearErrorMessage(); 
-					// do the inquiry
-					processAccountSelected();
+       	// 	     @Override
+       	// 	     public void handle(ActionEvent e) {
+       	// 	     	clearErrorMessage(); 
+		// 			// do the inquiry
+		// 			processBookSelected();
 					
-            	 }
-        	});
+        //     	 }
+        // 	});
 
 		cancelButton = new Button("Back");
  		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -207,7 +207,7 @@ public class BookCollectionView extends View
 			 		*/
 					//----------------------------------------------------------
        		     	clearErrorMessage();
-       		     	myModel.stateChangeRequest("CancelAccountList", null); 
+       		     	myModel.stateChangeRequest("CancelBookList", null); 
             	  }
         	});
 
@@ -231,17 +231,17 @@ public class BookCollectionView extends View
 	}
 
 	//--------------------------------------------------------------------------
-	protected void processAccountSelected()
-	{
-		BookTableModel selectedItem = tableOfAccounts.getSelectionModel().getSelectedItem();
+	// protected void processBookSelected()
+	// {
+	// 	BookTableModel selectedItem = tableOfBooks.getSelectionModel().getSelectedItem();
 		
-		if(selectedItem != null)
-		{
-			String selectedAcctNumber = selectedItem.getAccountNumber();
+	// 	if(selectedItem != null)
+	// 	{
+	// 		String selectedAcctNumber = selectedItem.getBookNumber();
 
-			myModel.stateChangeRequest("AccountSelected", selectedAcctNumber);
-		}
-	}
+	// 		myModel.stateChangeRequest("BookSelected", selectedAcctNumber);
+	// 	}
+	// }
 
 	//--------------------------------------------------------------------------
 	protected MessageView createStatusLog(String initialMessage)
@@ -275,7 +275,7 @@ public class BookCollectionView extends View
 	{
 		if(click.getClickCount() >= 2)
 		{
-			processAccountSelected();
+			processBookSelected();
 		}
 	}
    */

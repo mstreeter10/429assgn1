@@ -110,6 +110,8 @@ public class LibrarianView extends View
 		VBox btnContainer = new VBox(10);
 		btnContainer.getChildren().addAll(insertBookButton, insertPatronButton, searchBooksButton, searchPatronsButton, doneButton);
 
+		grid.getChildren().add(btnContainer);
+
 		return grid;
 	}
 

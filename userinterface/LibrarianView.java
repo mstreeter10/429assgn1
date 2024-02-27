@@ -63,10 +63,11 @@ public class LibrarianView extends View
 
 		getChildren().add(container);
 
+		System.out.println("populate");
 		populateFields();
 
 		// STEP 0: Be sure you tell your model what keys you are interested in
-		myModel.subscribe("LoginError", this);
+		// myModel.subscribe("LoginError", this);
 	}
 
 	// Create the label (Text) for the title of the screen
@@ -127,8 +128,8 @@ public class LibrarianView extends View
 	//-------------------------------------------------------------
 	public void populateFields()
 	{
-		userid.setText("");
-		password.setText("");
+		// userid.setText("");
+		// password.setText("");
 	}
 
 	// This method processes events generated from our GUI components.

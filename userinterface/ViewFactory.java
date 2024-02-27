@@ -7,15 +7,15 @@ public class ViewFactory {
 
 	public static View createView(String viewName, IModel model)
 	{
-		if(viewName.equals("TellerView") == true)
+		if(viewName.equals("LibrarianView") == true)
 		{
 			return new LibrarianView(model);
 		}
-		else if(viewName.equals("AccountCollectionView") == true)
+		else if(viewName.equals("BookCollectionView") == true)
 		{
 			return new BookCollectionView(model);
 		}
-		else if(viewName.equals("AccountView") == true)
+		else if(viewName.equals("BookView") == true)
 		{
 			return new BookView(model);
 		}

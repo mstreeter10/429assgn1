@@ -3,7 +3,6 @@
 package userinterface;
 
 // system imports
-import java.text.NumberFormat;
 import java.util.Properties;
 
 import javafx.event.Event;
@@ -12,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -25,12 +23,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 // project imports
 import impresario.IModel;
 
-/** The class containing the Teller View  for the ATM application */
+/** The class containing the Librarian View  for the ATM application */
 //==============================================================
 public class LibrarianView extends View
 {
@@ -45,10 +42,10 @@ public class LibrarianView extends View
 
 	// constructor for this class -- takes a model object
 	//----------------------------------------------------------
-	public LibrarianView( IModel teller)
+	public LibrarianView( IModel librarian)
 	{
 
-		super(teller, "TellerView");
+		super(librarian, "LibrarianView");
 
 		// create a container for showing the contents
 		VBox container = new VBox(10);
@@ -77,7 +74,7 @@ public class LibrarianView extends View
 	private Node createTitle()
 	{
 		
-		Text titleText = new Text("       Brockport Bank ATM          ");
+		Text titleText = new Text("       Brockport Library          ");
 		titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		titleText.setTextAlignment(TextAlignment.CENTER);
 		titleText.setFill(Color.DARKGREEN);
@@ -96,35 +93,12 @@ public class LibrarianView extends View
         	grid.setVgap(10);
         	grid.setPadding(new Insets(25, 25, 25, 25));
 
-		// data entry fields
-		Label userName = new Label("User ID:");
-        	grid.add(userName, 0, 0);
-
-		userid = new TextField();
-		userid.setOnAction(new EventHandler<ActionEvent>() {
-
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	processAction(e);    
-            	     }
-        	});
-        	grid.add(userid, 1, 0);
-
-		Label pw = new Label("Password:");
-        	grid.add(pw, 0, 1);
-
-		password = new PasswordField();
-		password.setOnAction(new EventHandler<ActionEvent>() {
-
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	processAction(e);    
-            	     }
-        	});
-        	grid.add(password, 1, 1);
-
-		submitButton = new Button("Submit");
- 		submitButton.setOnAction(new EventHandler<ActionEvent>() {
+		Button insertBookButton = new Button("Insert New Book");
+		Button insertPatronButton = new Button("Insert New Patron");
+		Button searchBooksButton = new Button("Search Books");
+		Button searchPatronsButton = new Button("Search Patrons");
+		Button doneButton = new Button("Done");
+ 		doneButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
@@ -132,10 +106,8 @@ public class LibrarianView extends View
             	     }
         	});
 
-		HBox btnContainer = new HBox(10);
-		btnContainer.setAlignment(Pos.BOTTOM_RIGHT);
-		btnContainer.getChildren().add(submitButton);
-		grid.add(btnContainer, 1, 3);
+		VBox btnContainer = new VBox(10);
+		btnContainer.getChildren().addAll(insertBookButton, insertPatronButton, searchBooksButton, searchPatronsButton, doneButton);
 
 		return grid;
 	}
@@ -164,28 +136,28 @@ public class LibrarianView extends View
 	//-------------------------------------------------------------
 	public void processAction(Event evt)
 	{
-		// DEBUG: System.out.println("TellerView.actionPerformed()");
+		// // DEBUG: System.out.println("LibrarianView.actionPerformed()");
 
-		clearErrorMessage();
+		// clearErrorMessage();
 
-		String useridEntered = userid.getText();
+		// String useridEntered = userid.getText();
 
-		if ((useridEntered == null) || (useridEntered.length() == 0))
-		{
-			displayErrorMessage("Please enter a user id!");
-			userid.requestFocus();
-		}
-		else
-		{
-			String passwordEntered = password.getText();
-			processUserIDAndPassword(useridEntered, passwordEntered);
-		}
+		// if ((useridEntered == null) || (useridEntered.length() == 0))
+		// {
+		// 	displayErrorMessage("Please enter a user id!");
+		// 	userid.requestFocus();
+		// }
+		// else
+		// {
+		// 	String passwordEntered = password.getText();
+		// 	processUserIDAndPassword(useridEntered, passwordEntered);
+		// }
 
 	}
 
 	/**
 	 * Process userid and pwd supplied when Submit button is hit.
-	 * Action is to pass this info on to the teller object
+	 * Action is to pass this info on to the librarian object
 	 */
 	//----------------------------------------------------------
 	private void processUserIDAndPassword(String useridString,

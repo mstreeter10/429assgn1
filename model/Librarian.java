@@ -33,14 +33,9 @@ public class Librarian implements IView, IModel
 	private Properties dependencies;
 	private ModelRegistry myRegistry;
 
-	private AccountHolder myAccountHolder;
-
 	// GUI Components
 	private Hashtable<String, Scene> myViews;
-	private Stage	  	myStage;
-
-	private String loginErrorMessage = "";
-	private String transactionErrorMessage = "";
+	private Stage myStage;
 
 	// constructor for this class
 	//----------------------------------------------------------
@@ -51,10 +46,10 @@ public class Librarian implements IView, IModel
 
 		// STEP 3.1: Create the Registry object - if you inherit from
 		// EntityBase, this is done for you. Otherwise, you do it yourself
-		myRegistry = new ModelRegistry("Teller");
+		myRegistry = new ModelRegistry("Librarian");
 		if(myRegistry == null)
 		{
-			new Event(Event.getLeafLevelClassName(this), "Teller",
+			new Event(Event.getLeafLevelClassName(this), "Librarian",
 				"Could not instantiate Registry", Event.ERROR);
 		}
 
@@ -62,19 +57,19 @@ public class Librarian implements IView, IModel
 		setDependencies();
 
 		// Set up the initial view
-		createAndShowTellerView();
+		createAndShowLibrarianView();
 	}
 
 	//-----------------------------------------------------------------------------------
 	private void setDependencies()
 	{
 		dependencies = new Properties();
-		dependencies.setProperty("Login", "LoginError");
-		dependencies.setProperty("Deposit", "TransactionError");
-		dependencies.setProperty("Withdraw", "TransactionError");
-		dependencies.setProperty("Transfer", "TransactionError");
-		dependencies.setProperty("BalanceInquiry", "TransactionError");
-		dependencies.setProperty("ImposeServiceCharge", "TransactionError");
+		// dependencies.setProperty("Login", "LoginError");
+		// dependencies.setProperty("Deposit", "TransactionError");
+		// dependencies.setProperty("Withdraw", "TransactionError");
+		// dependencies.setProperty("Transfer", "TransactionError");
+		// dependencies.setProperty("BalanceInquiry", "TransactionError");
+		// dependencies.setProperty("ImposeServiceCharge", "TransactionError");
 
 		myRegistry.setDependencies(dependencies);
 	}
@@ -90,6 +85,7 @@ public class Librarian implements IView, IModel
 	//----------------------------------------------------------
 	public Object getState(String key)
 	{
+		/* 
 		if (key.equals("LoginError") == true)
 		{
 			return loginErrorMessage;
@@ -110,6 +106,7 @@ public class Librarian implements IView, IModel
 				return "Undefined";
 		}
 		else
+		*/
 			return "";
 	}
 
@@ -120,49 +117,49 @@ public class Librarian implements IView, IModel
 		// just set up dependencies for
 		// DEBUG System.out.println("Teller.sCR: key = " + key);
 
-		if (key.equals("Login") == true)
-		{
-			if (value != null)
-			{
-				loginErrorMessage = "";
+		// if (key.equals("Login") == true)
+		// {
+		// 	if (value != null)
+		// 	{
+		// 		loginErrorMessage = "";
 
-				boolean flag = loginAccountHolder((Properties)value);
-				if (flag == true)
-				{
-					createAndShowTransactionChoiceView();
-				}
-			}
-		}
-		else
-		if (key.equals("CancelTransaction") == true)
-		{
-			createAndShowTransactionChoiceView();
-		}
-		else
-		if ((key.equals("Deposit") == true) || (key.equals("Withdraw") == true) ||
-			(key.equals("Transfer") == true) || (key.equals("BalanceInquiry") == true) ||
-			(key.equals("ImposeServiceCharge") == true))
-		{
-			String transType = key;
+		// 		boolean flag = loginAccountHolder((Properties)value);
+		// 		if (flag == true)
+		// 		{
+		// 			createAndShowTransactionChoiceView();
+		// 		}
+		// 	}
+		// }
+		// else
+		// if (key.equals("CancelTransaction") == true)
+		// {
+		// 	createAndShowTransactionChoiceView();
+		// }
+		// else
+		// if ((key.equals("Deposit") == true) || (key.equals("Withdraw") == true) ||
+		// 	(key.equals("Transfer") == true) || (key.equals("BalanceInquiry") == true) ||
+		// 	(key.equals("ImposeServiceCharge") == true))
+		// {
+		// 	String transType = key;
 
-			if (myAccountHolder != null)
-			{
-				doTransaction(transType);
-			}
-			else
-			{
-				transactionErrorMessage = "Transaction impossible: Customer not identified";
-			}
+		// 	if (myAccountHolder != null)
+		// 	{
+		// 		doTransaction(transType);
+		// 	}
+		// 	else
+		// 	{
+		// 		transactionErrorMessage = "Transaction impossible: Customer not identified";
+		// 	}
 
-		}
-		else
-		if (key.equals("Logout") == true)
-		{
-			myAccountHolder = null;
-			myViews.remove("TransactionChoiceView");
+		// }
+		// else
+		// if (key.equals("Logout") == true)
+		// {
+		// 	myAccountHolder = null;
+		// 	myViews.remove("TransactionChoiceView");
 
-			createAndShowTellerView();
-		}
+		// 	createAndShowTellerView();
+		// }
 
 		myRegistry.updateSubscribers(key, this);
 	}
@@ -180,26 +177,27 @@ public class Librarian implements IView, IModel
 	 * Login AccountHolder corresponding to user name and password.
 	 */
 	//----------------------------------------------------------
-	public boolean loginAccountHolder(Properties props)
-	{
-		try
-		{
-			myAccountHolder = new AccountHolder(props);
-			// DEBUG System.out.println("Account Holder: " + myAccountHolder.getState("Name") + " successfully logged in");
-			return true;
-		}
-		catch (InvalidPrimaryKeyException ex)
-		{
-				loginErrorMessage = "ERROR: " + ex.getMessage();
-				return false;
-		}
-		catch (PasswordMismatchException exec)
-		{
 
-				loginErrorMessage = "ERROR: " + exec.getMessage();
-				return false;
-		}
-	}
+	// public boolean loginAccountHolder(Properties props)
+	// {
+	// 	try
+	// 	{
+	// 		myAccountHolder = new AccountHolder(props);
+	// 		// DEBUG System.out.println("Account Holder: " + myAccountHolder.getState("Name") + " successfully logged in");
+	// 		return true;
+	// 	}
+	// 	catch (InvalidPrimaryKeyException ex)
+	// 	{
+	// 			loginErrorMessage = "ERROR: " + ex.getMessage();
+	// 			return false;
+	// 	}
+	// 	catch (PasswordMismatchException exec)
+	// 	{
+
+	// 			loginErrorMessage = "ERROR: " + exec.getMessage();
+	// 			return false;
+	// 	}
+	// }
 
 
 	/**
@@ -208,55 +206,56 @@ public class Librarian implements IView, IModel
 	 * create.
 	 */
 	//----------------------------------------------------------
-	public void doTransaction(String transactionType)
-	{
-		try
-		{
-			Transaction trans = TransactionFactory.createTransaction(
-				transactionType, myAccountHolder);
 
-			trans.subscribe("CancelTransaction", this);
-			trans.stateChangeRequest("DoYourJob", "");
-		}
-		catch (Exception ex)
-		{
-			transactionErrorMessage = "FATAL ERROR: TRANSACTION FAILURE: Unrecognized transaction!!";
-			new Event(Event.getLeafLevelClassName(this), "createTransaction",
-					"Transaction Creation Failure: Unrecognized transaction " + ex.toString(),
-					Event.ERROR);
-		}
-	}
+	// public void doTransaction(String transactionType)
+	// {
+	// 	try
+	// 	{
+	// 		Transaction trans = TransactionFactory.createTransaction(
+	// 			transactionType, myAccountHolder);
+
+	// 		trans.subscribe("CancelTransaction", this);
+	// 		trans.stateChangeRequest("DoYourJob", "");
+	// 	}
+	// 	catch (Exception ex)
+	// 	{
+	// 		transactionErrorMessage = "FATAL ERROR: TRANSACTION FAILURE: Unrecognized transaction!!";
+	// 		new Event(Event.getLeafLevelClassName(this), "createTransaction",
+	// 				"Transaction Creation Failure: Unrecognized transaction " + ex.toString(),
+	// 				Event.ERROR);
+	// 	}
+	// }
 
 	//----------------------------------------------------------
-	private void createAndShowTransactionChoiceView()
-	{
-		Scene currentScene = (Scene)myViews.get("TransactionChoiceView");
+	// private void createAndShowTransactionChoiceView()
+	// {
+	// 	Scene currentScene = (Scene)myViews.get("TransactionChoiceView");
 		
-		if (currentScene == null)
-		{
-			// create our initial view
-			View newView = ViewFactory.createView("TransactionChoiceView", this); // USE VIEW FACTORY
-			currentScene = new Scene(newView);
-			myViews.put("TransactionChoiceView", currentScene);
-		}
+	// 	if (currentScene == null)
+	// 	{
+	// 		// create our initial view
+	// 		View newView = ViewFactory.createView("TransactionChoiceView", this); // USE VIEW FACTORY
+	// 		currentScene = new Scene(newView);
+	// 		myViews.put("TransactionChoiceView", currentScene);
+	// 	}
 				
 
-		// make the view visible by installing it into the frame
-		swapToView(currentScene);
+	// 	// make the view visible by installing it into the frame
+	// 	swapToView(currentScene);
 		
-	}
+	// }
 
 	//------------------------------------------------------------
-	private void createAndShowTellerView()
+	private void createAndShowLibrarianView()
 	{
-		Scene currentScene = (Scene)myViews.get("TellerView");
+		Scene currentScene = (Scene)myViews.get("LibrarianView");
 
 		if (currentScene == null)
 		{
 			// create our initial view
-			View newView = ViewFactory.createView("TellerView", this); // USE VIEW FACTORY
+			View newView = ViewFactory.createView("LibrarianView", this); // USE VIEW FACTORY
 			currentScene = new Scene(newView);
-			myViews.put("TellerView", currentScene);
+			myViews.put("LibrarianView", currentScene);
 		}
 				
 		swapToView(currentScene);
@@ -291,7 +290,7 @@ public class Librarian implements IView, IModel
 		
 		if (newScene == null)
 		{
-			System.out.println("Teller.swapToView(): Missing view for display");
+			System.out.println("Librarian.swapToView(): Missing view for display");
 			new Event(Event.getLeafLevelClassName(this), "swapToView",
 				"Missing view for display ", Event.ERROR);
 			return;

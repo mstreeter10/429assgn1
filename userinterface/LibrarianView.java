@@ -95,7 +95,21 @@ public class LibrarianView extends View
         	grid.setPadding(new Insets(25, 25, 25, 25));
 
 		Button insertBookButton = new Button("Insert New Book");
+		insertBookButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("InsertBook", "idk lol?");
+			 }
+		});
 		Button insertPatronButton = new Button("Insert New Patron");
+		insertPatronButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("InsertPatron", null);
+			 }
+		});
 		Button searchBooksButton = new Button("Search Books");
 		Button searchPatronsButton = new Button("Search Patrons");
 		Button doneButton = new Button("Done");

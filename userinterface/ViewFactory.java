@@ -19,6 +19,10 @@ public class ViewFactory {
 		{
 			return new BookView(model);
 		}
+		else if(viewName.equals("PatronView") == true)
+		{
+			return new PatronView(model);
+		}
 		else
 			return null;
 	}

@@ -23,7 +23,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 // project imports
@@ -31,16 +33,20 @@ import impresario.IModel;
 
 /** The class containing the Account View  for the ATM application */
 //==============================================================
-public class BookView extends View
+public class PatronView extends View
 {
 
 	// GUI components
 	// protected TextField accountNumber;
 	// protected TextField acctType;
 	// protected TextField balance;
-	protected TextField author;
-	protected TextField title;
-	protected TextField pubYear;
+	protected TextField name;
+	protected TextField address;
+	protected TextField city;
+	protected TextField stateCode;
+	protected TextField zip;
+	protected TextField email;
+	protected TextField dateOfBirth;
 
 	protected ComboBox<String> active;
 
@@ -52,9 +58,9 @@ public class BookView extends View
 
 	// constructor for this class -- takes a model object
 	//----------------------------------------------------------
-	public BookView(IModel account)
+	public PatronView(IModel account)
 	{
-		super(account, "BookView");
+		super(account, "PatronView");
 
 		// create a container for showing the contents
 		VBox container = new VBox(10);
@@ -70,7 +76,7 @@ public class BookView extends View
 
 		getChildren().add(container);
 
-		myModel.subscribe("BookSubmit", this);
+		myModel.subscribe("PatronSubmit", this);
 	}
 
 
@@ -81,7 +87,7 @@ public class BookView extends View
 		HBox container = new HBox();
 		container.setAlignment(Pos.CENTER);	
 
-		Text titleText = new Text(" Insert Book ");
+		Text titleText = new Text(" Insert Patron ");
 		titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		titleText.setWrappingWidth(300);
 		titleText.setTextAlignment(TextAlignment.CENTER);
@@ -105,48 +111,88 @@ public class BookView extends View
 
 		Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
 
-		Text aLabel = new Text(" Author : ");
-		aLabel.setFont(myFont);
-		aLabel.setWrappingWidth(150);
-		aLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(aLabel, 0, 0);
+		Text nameLabel = new Text(" Name : ");
+		nameLabel.setFont(myFont);
+		nameLabel.setWrappingWidth(150);
+		nameLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(nameLabel, 0, 0);
 
-		author = new TextField();
-		author.setEditable(true);
-		grid.add(author, 1, 0);
+		name = new TextField();
+		name.setEditable(true);
+		grid.add(name, 1, 0);
 
-		Text tLabel = new Text(" Title : ");
-		tLabel.setFont(myFont);
-		tLabel.setWrappingWidth(150);
-		tLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(tLabel, 0, 1);
+		Text addressLabel = new Text(" Address : ");
+		addressLabel.setFont(myFont);
+		addressLabel.setWrappingWidth(150);
+		addressLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(addressLabel, 0, 1);
 
-		title = new TextField();
-		title.setEditable(true);
-		grid.add(title, 1, 1);
+		address = new TextField();
+		address.setEditable(true);
+		grid.add(address, 1, 1);
 
-		Text pyLabel = new Text(" Publication Year : ");
-		pyLabel.setFont(myFont);
-		pyLabel.setWrappingWidth(150);
-		pyLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(pyLabel, 0, 2);
+		Text cityLabel = new Text(" City : ");
+		cityLabel.setFont(myFont);
+		cityLabel.setWrappingWidth(150);
+		cityLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(cityLabel, 0, 2);
 
-		pubYear = new TextField();
-		pubYear.setEditable(true);
-		grid.add(pubYear, 1, 2);
+		city = new TextField();
+		city.setEditable(true);
+		grid.add(city, 1, 2);
+
+		Text stateCodeLabel = new Text(" State Code : ");
+		stateCodeLabel.setFont(myFont);
+		stateCodeLabel.setWrappingWidth(150);
+		stateCodeLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(stateCodeLabel, 0, 3);
+
+		stateCode = new TextField();
+		stateCode.setEditable(true);
+		grid.add(stateCode, 1, 3);
+
+		Text zipLabel = new Text(" Zip : ");
+		zipLabel.setFont(myFont);
+		zipLabel.setWrappingWidth(150);
+		zipLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(zipLabel, 0, 4);
+
+		zip = new TextField();
+		zip.setEditable(true);
+		grid.add(zip, 1, 4);
+
+		Text emailLabel = new Text(" Email : ");
+		emailLabel.setFont(myFont);
+		emailLabel.setWrappingWidth(150);
+		emailLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(emailLabel, 0, 5);
+
+		email = new TextField();
+		email.setEditable(true);
+		grid.add(email, 1, 5);
+
+		Text dobLabel = new Text(" Date of Birth : ");
+		dobLabel.setFont(myFont);
+		dobLabel.setWrappingWidth(150);
+		dobLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(dobLabel, 0, 6);
+
+		dateOfBirth = new TextField();
+		dateOfBirth.setEditable(true);
+		grid.add(dateOfBirth, 1, 6);
 
 		Text sLabel = new Text(" Status : ");
 		sLabel.setFont(myFont);
 		sLabel.setWrappingWidth(150);
 		sLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(sLabel, 0, 3);
+		grid.add(sLabel, 0, 7);
 
 		active = new ComboBox<String>();
 		active.setMinSize(100, 20);
 		active.getItems().add("Active");
 		active.getItems().add("Inactive");
 		active.setValue(active.getItems().get(0));
-		grid.add(active, 1, 3);
+		grid.add(active, 1, 7);
 
 		HBox doneCont = new HBox(10);
 		doneCont.setAlignment(Pos.CENTER);
@@ -156,14 +202,18 @@ public class BookView extends View
        		     @Override
        		     public void handle(ActionEvent e) {
        		    	clearErrorMessage();
-					Properties bookProperties = new Properties();
-					bookProperties.setProperty("bookTitle",title.getText());
-					bookProperties.setProperty("author",author.getText());
-					bookProperties.setProperty("pubYear",pubYear.getText());
-					bookProperties.setProperty("status",active.getValue());
-					if (validateBookProperties(bookProperties))
+					Properties partonProperties = new Properties();
+					partonProperties.setProperty("name",name.getText());
+					partonProperties.setProperty("address",address.getText());
+					partonProperties.setProperty("city",city.getText());
+					partonProperties.setProperty("stateCode",stateCode.getText());
+					partonProperties.setProperty("zip",zip.getText());
+					partonProperties.setProperty("email",email.getText());
+					partonProperties.setProperty("dateOfBirth",dateOfBirth.getText());
+					partonProperties.setProperty("status",active.getValue());
+					if (validatePatronProperties(partonProperties))
 					{
-       		    		myModel.stateChangeRequest("BookSubmit", bookProperties);
+       		    		myModel.stateChangeRequest("PatronSubmit", partonProperties);
 					}
 					else
 					{
@@ -191,6 +241,37 @@ public class BookView extends View
 		return vbox;
 	}
 
+	private boolean validatePatronProperties(Properties properites)
+	{
+		if (properites.getProperty("name") == null | properites.getProperty("name") == "")
+			return false;
+		if (properites.getProperty("address") == null | properites.getProperty("address") == "") 
+			return false;
+		if (properites.getProperty("city") == null | properites.getProperty("city") == "") 
+			return false;
+		if (properites.getProperty("stateCode") == null | properites.getProperty("stateCode") == "") 
+			return false;
+		if (properites.getProperty("zip") == null | properites.getProperty("zip") == "") 
+			return false;
+		if (properites.getProperty("email") == null | properites.getProperty("email") == "") 
+			return false;
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+
+		try {
+			Date earliest = simpleDateFormat.parse("1920-01-01");
+        	Date latest = simpleDateFormat.parse("2006-01-01");
+			Date actual = simpleDateFormat.parse(properites.getProperty("dateOfBirth"));
+			if (actual.before(earliest) | actual.after(latest))
+				return false;
+		}
+		catch (ParseException e) {
+			return false;
+		}
+		
+		return true;
+	}
+
 
 	// Create the status log field
 	//-------------------------------------------------------------
@@ -209,18 +290,6 @@ public class BookView extends View
 		// balance.setText((String)myModel.getState("Balance"));
 	 	// serviceCharge.setText((String)myModel.getState("ServiceCharge"));
 	}
-
-	private boolean validateBookProperties(Properties properites)
-	{
-		if (properites.getProperty("author") == null | properites.getProperty("author") == "")
-			return false;
-		if (properites.getProperty("bookTitle") == null | properites.getProperty("bookTitle") == "") 
-			return false;
-		if (Integer.parseInt(properites.getProperty("pubYear")) < 1800 | Integer.parseInt(properites.getProperty("pubYear")) > 2024) 
-			return false;
-		
-		return true;
-	}
 	/**
 	 * Update method
 	 */
@@ -228,7 +297,7 @@ public class BookView extends View
 	public void updateState(String key, Object value)
 	{
 		clearErrorMessage();
-		if (key.equals("BookSubmit") == true)
+		if (key.equals("PatronSubmit") == true)
 		{
 			System.out.println("Key: " + key);
 			String val = (String)value;

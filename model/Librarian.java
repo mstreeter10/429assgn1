@@ -41,6 +41,9 @@ public class Librarian implements IView, IModel
 	private Hashtable<String, Scene> myViews;
 	private Stage myStage;
 
+	private String bookSubmitStatus;
+	private String patronSubmitStatus;
+
 	// constructor for this class
 	//----------------------------------------------------------
 	public Librarian()
@@ -87,8 +90,14 @@ public class Librarian implements IView, IModel
 	 * @return	Value associated with the field
 	 */
 	//----------------------------------------------------------
-	public Object getState(String key) {
-		if (key.equals("BookCollection") == true)
+	public Object getState(String key)
+	{
+		if (key.equals("BookSubmit") == true)
+			return bookSubmitStatus;
+		else if (key.equals("PatronSubmit") == true)
+			return patronSubmitStatus;
+
+		else if (key.equals("BookCollection") == true)
 		{
 			if (bookCollection != null)
 			{
@@ -106,14 +115,47 @@ public class Librarian implements IView, IModel
 			else
 				return "Undefined";
 		}
-		else
 			return "";
 	}
 
 	//----------------------------------------------------------------
 	public void stateChangeRequest(String key, Object value)
 	{
-		if (key.equals("SearchBooks")) {
+		// STEP 4: Write the sCR method component for the key you
+		// just set up dependencies for
+		// DEBUG System.out.println("Teller.sCR: key = " + key);
+
+		if (key.equals("InsertBook") == true)
+		{
+			createAndShowBookView();
+		}
+		if (key.equals("InsertPatron") == true)
+		{
+			createAndShowPatronView();
+		}
+		if (key.equals("PatronSubmit") == true)
+		{
+			Properties p = (Properties)value;
+			Patron patron = new Patron(p);
+			patron.update();
+			patronSubmitStatus = (String)patron.getState("UpdateStatusMessage");
+		}
+		if (key.equals("BookSubmit") == true)
+		{
+			Properties p = (Properties)value;
+			Book b = new Book(p);
+			b.update();
+			bookSubmitStatus = (String)b.getState("UpdateStatusMessage");
+		}
+		if (key.equals("BookDone") == true)
+		{
+			createAndShowLibrarianView();
+		}
+		if (key.equals("PatornDone") == true)
+		{
+			createAndShowLibrarianView();
+		}
+		else if (key.equals("SearchBooks")) {
 			createAndShowSearchBooksView();
 		}
 		else if (key.equals("BookCollection")) {
@@ -161,7 +203,50 @@ public class Librarian implements IView, IModel
 		else if (key.equals("CancelPatronSearch")) {
 			createAndShowLibrarianView();
 		}
-		
+		// if (key.equals("Login") == true)
+		// {
+		// 	if (value != null)
+		// 	{
+		// 		loginErrorMessage = "";
+
+		// 		boolean flag = loginAccountHolder((Properties)value);
+		// 		if (flag == true)
+		// 		{
+		// 			createAndShowTransactionChoiceView();
+		// 		}
+		// 	}
+		// }
+		// else
+		// if (key.equals("CancelTransaction") == true)
+		// {
+		// 	createAndShowTransactionChoiceView();
+		// }
+		// else
+		// if ((key.equals("Deposit") == true) || (key.equals("Withdraw") == true) ||
+		// 	(key.equals("Transfer") == true) || (key.equals("BalanceInquiry") == true) ||
+		// 	(key.equals("ImposeServiceCharge") == true))
+		// {
+		// 	String transType = key;
+
+		// 	if (myAccountHolder != null)
+		// 	{
+		// 		doTransaction(transType);
+		// 	}
+		// 	else
+		// 	{
+		// 		transactionErrorMessage = "Transaction impossible: Customer not identified";
+		// 	}
+
+		// }
+		// else
+		// if (key.equals("Logout") == true)
+		// {
+		// 	myAccountHolder = null;
+		// 	myViews.remove("TransactionChoiceView");
+
+		// 	createAndShowTellerView();
+		// }
+
 		myRegistry.updateSubscribers(key, this);
 	}
 
@@ -246,6 +331,36 @@ public class Librarian implements IView, IModel
 				
 		swapToView(currentScene);
 		
+	}
+
+	private void createAndShowBookView()
+	{
+		Scene currentScene = (Scene)myViews.get("BookView");
+
+		if (currentScene == null)
+		{
+			// create our initial view
+			View newView = ViewFactory.createView("BookView", this); // USE VIEW FACTORY
+			currentScene = new Scene(newView);
+			myViews.put("BookView", currentScene);
+		}
+				
+		swapToView(currentScene);
+	}
+
+	private void createAndShowPatronView()
+	{
+		Scene currentScene = (Scene)myViews.get("PatronView");
+
+		if (currentScene == null)
+		{
+			// create our initial view
+			View newView = ViewFactory.createView("PatronView", this); // USE VIEW FACTORY
+			currentScene = new Scene(newView);
+			myViews.put("PatronView", currentScene);
+		}
+				
+		swapToView(currentScene);
 	}
 
 

@@ -52,7 +52,7 @@ public class BookCollection extends EntityBase {
     }
 
     public void findBooksWithTitleLike(String title) throws SQLException {
-        String query = "SELECT * FROM " + myTableName + " WHERE bookTitle LIKE '%" + title + "%';";
+        String query = "SELECT * FROM " + myTableName + " WHERE bookTitle LIKE '%" + title + "%' ORDER BY author ASC;";
         Vector<Properties> result = getSelectQueryResult(query);
         if (result != null) {
 			for (int i = 0; i < result.size(); i++) {
@@ -80,9 +80,9 @@ public class BookCollection extends EntityBase {
     }
 
     public Object getState(String key) {
-		if (key.equals("Accounts"))
+		if (key.equals("Books"))
 			return bookList;
-		else if (key.equals("AccountList"))
+		else if (key.equals("BookCollection"))
 			return this;
 		return null;
 	}

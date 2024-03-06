@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.regex.*;
@@ -42,10 +43,10 @@ public class PatronCollection extends EntityBase
 		else System.out.println("Found no results for partons at zip code " + zip);
 	}
 
-	public void findPatronsWithNameLike(String name) throws IllegalArgumentException
+	public void findPatronsWithNameLike(String name) throws IllegalArgumentException, SQLException
 	{
 		if (name == null) throw new IllegalArgumentException();
-		String query = "SELECT * FROM " + myTableName + " WHERE name LIKE '%" + name + "%'';";
+		String query = "SELECT * FROM " + myTableName + " WHERE name LIKE '%" + name + "%' ORDER BY name ASC;";
 		Vector<Properties> result = getSelectQueryResult(query);
 		if (result != null) populatePatronList(result);
 		else System.out.println("Found no results for partons with name like " + name);
@@ -55,8 +56,8 @@ public class PatronCollection extends EntityBase
 	{
 		for (int i = 0; i < queryResult.size(); i++) {
 			Properties nextQueryItem = queryResult.elementAt(i);
-			Patron parton = new Patron(nextQueryItem);
-			patronList.add(parton);
+			Patron patron = new Patron(nextQueryItem);
+			patronList.add(patron);
 		}
 	}
 
@@ -71,8 +72,10 @@ public class PatronCollection extends EntityBase
 
 	public Object getState(String key)
 	{
-		if (key.equals("patronList"))
+		if (key.equals("Patrons"))
 			return patronList;
+		else if (key.equals("PatronCollection"))
+			return this;
 		return null;
 	}
 

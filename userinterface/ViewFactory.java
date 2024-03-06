@@ -11,9 +11,21 @@ public class ViewFactory {
 		{
 			return new LibrarianView(model);
 		}
+		else if(viewName.equals("SearchBooksView") == true)
+		{
+			return new SearchBooksView(model);
+		}
 		else if(viewName.equals("BookCollectionView") == true)
 		{
 			return new BookCollectionView(model);
+		}
+		else if(viewName.equals("SearchPatronsView") == true)
+		{
+			return new SearchPatronsView(model);
+		}
+		else if(viewName.equals("PatronCollectionView") == true)
+		{
+			return new PatronCollectionView(model);
 		}
 		else if(viewName.equals("BookView") == true)
 		{
@@ -22,18 +34,4 @@ public class ViewFactory {
 		else
 			return null;
 	}
-
-
-	/*
-	public static Vector createVectorView(String viewName, IModel model)
-	{
-		if(viewName.equals("SOME VIEW NAME") == true)
-		{
-			//return [A NEW VECTOR VIEW OF THAT NAME TYPE]
-		}
-		else
-			return null;
-	}
-	*/
-
 }

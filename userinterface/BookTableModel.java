@@ -7,58 +7,72 @@ import javafx.beans.property.SimpleStringProperty;
 //==============================================================================
 public class BookTableModel
 {
-	private final SimpleStringProperty accountNumber;
-	private final SimpleStringProperty accountType;
-	private final SimpleStringProperty balance;
-	private final SimpleStringProperty serviceCharge;
+    private final SimpleStringProperty bookId;
+	private final SimpleStringProperty author;
+	private final SimpleStringProperty bookTitle;
+	private final SimpleStringProperty pubYear;
+	private final SimpleStringProperty status;
 
 	//----------------------------------------------------------------------------
-	public BookTableModel(Vector<String> accountData)
+	public BookTableModel(Vector<String> bookData)
 	{
-		accountNumber =  new SimpleStringProperty(accountData.elementAt(0));
-		accountType =  new SimpleStringProperty(accountData.elementAt(1));
-		balance =  new SimpleStringProperty(accountData.elementAt(2));
-		serviceCharge =  new SimpleStringProperty(accountData.elementAt(3));
+		bookId =  new SimpleStringProperty(bookData.elementAt(0));
+		author =  new SimpleStringProperty(bookData.elementAt(1));
+		bookTitle =  new SimpleStringProperty(bookData.elementAt(2));
+        pubYear =  new SimpleStringProperty(bookData.elementAt(3));
+		status =  new SimpleStringProperty(bookData.elementAt(4));
 	}
 
 	//----------------------------------------------------------------------------
-	public String getAccountNumber() {
-        return accountNumber.get();
+	public String getBookId() {
+        // System.out.println("get id called");
+        // System.out.println(bookId.get());
+        return bookId.get();
     }
 
 	//----------------------------------------------------------------------------
-    public void setAccountNumber(String number) {
-        accountNumber.set(number);
+    public void setBookId(String id) {
+        bookId.set(id);
     }
 
     //----------------------------------------------------------------------------
-    public String getAccountType() {
-        return accountType.get();
+    public String getAuthor() {
+        return author.get();
     }
 
     //----------------------------------------------------------------------------
-    public void setAccountType(String aType) {
-        accountType.set(aType);
+    public void setAuthor(String athr) {
+        author.set(athr);
     }
 
     //----------------------------------------------------------------------------
-    public String getBalance() {
-        return balance.get();
+    public String getBookTitle() {
+        return bookTitle.get();
     }
 
     //----------------------------------------------------------------------------
-    public void setBalance(String bal) {
-        balance.set(bal);
+    public void setBookTitle(String title) {
+        bookTitle.set(title);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getPubYear() {
+        return pubYear.get();
+    }
+
+    //----------------------------------------------------------------------------
+    public void setPubYear(String year) {
+        pubYear.set(year);
     }
     
     //----------------------------------------------------------------------------
-    public String getServiceCharge() {
-        return serviceCharge.get();
+    public String getStatus() {
+        return status.get();
     }
 
     //----------------------------------------------------------------------------
-    public void setServiceCharge(String charge)
+    public void setStatus(String sts)
     {
-    	serviceCharge.set(charge);
+    	status.set(sts);
     }
 }

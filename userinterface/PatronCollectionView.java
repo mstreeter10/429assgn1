@@ -37,13 +37,13 @@ import java.util.Enumeration;
 
 // project imports
 import impresario.IModel;
-import model.Book;
-import model.BookCollection;
+import model.Patron;
+import model.PatronCollection;
 
 //==============================================================================
-public class BookCollectionView extends View
+public class PatronCollectionView extends View
 {
-	protected TableView<BookTableModel> tableOfBooks;
+	protected TableView<PatronTableModel> tableOfPatrons;
 	protected Button cancelButton;
 	protected Button submitButton;
 
@@ -51,9 +51,9 @@ public class BookCollectionView extends View
 
 
 	//--------------------------------------------------------------------------
-	public BookCollectionView(IModel wsc)
+	public PatronCollectionView(IModel wsc)
 	{
-		super(wsc, "BookCollectionView");
+		super(wsc, "PatronCollectionView");
 
 		// create a container for showing the contents
 		VBox container = new VBox(10);
@@ -80,27 +80,25 @@ public class BookCollectionView extends View
 	//--------------------------------------------------------------------------
 	protected void getEntryTableModelValues()
 	{
-		
-		ObservableList<BookTableModel> tableData = FXCollections.observableArrayList();
+		ObservableList<PatronTableModel> tableData = FXCollections.observableArrayList();
 		try
 		{
-			BookCollection bookCollection = (BookCollection)myModel.getState("BookCollection");
-			bookCollection.display();
+			PatronCollection patronCollection = (PatronCollection)myModel.getState("PatronCollection");
+			patronCollection.display();
 
-	 		Vector entryList = (Vector)bookCollection.getState("Books");
+	 		Vector entryList = (Vector)patronCollection.getState("Patrons");
 			Enumeration entries = entryList.elements();
+
 			while (entries.hasMoreElements() == true)
 			{
-				Book nextBook = (Book)entries.nextElement();
-				Vector<String> view = nextBook.getEntryListView();
-
+				Patron nextPatron = (Patron)entries.nextElement();
+				Vector<String> view = nextPatron.getEntryListView();
 				// add this list entry to the list
-				BookTableModel nextTableRowData = new BookTableModel(view);
+				PatronTableModel nextTableRowData = new PatronTableModel(view);
 				tableData.add(nextTableRowData);
-				
 			}
 			
-			tableOfBooks.setItems(tableData);
+			tableOfPatrons.setItems(tableData);
 		}
 		catch (Exception e) {//SQLException e) {
 			// Need to handle this exception
@@ -136,54 +134,74 @@ public class BookCollectionView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         
-        Text prompt = new Text("LIST OF BOOKS");
+        Text prompt = new Text("LIST OF PATRONS");
         prompt.setWrappingWidth(350);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-		tableOfBooks = new TableView<BookTableModel>();
-		tableOfBooks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		tableOfPatrons = new TableView<PatronTableModel>();
+		tableOfPatrons.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-		TableColumn bookIdColumn = new TableColumn("bookId") ;
-		bookIdColumn.setMinWidth(100);
-		bookIdColumn.setCellValueFactory(
-	                new PropertyValueFactory<BookTableModel, String>("bookId"));
+		TableColumn patronIdColumn = new TableColumn("PatronId") ;
+		patronIdColumn.setMinWidth(100);
+		patronIdColumn.setCellValueFactory(
+	                new PropertyValueFactory<PatronTableModel, String>("patronId"));
 	
-		TableColumn authorColumn = new TableColumn("Author") ;
-		authorColumn.setMinWidth(100);
-		authorColumn.setCellValueFactory(
-	                new PropertyValueFactory<BookTableModel, String>("author"));
+		TableColumn nameColumn = new TableColumn("Name") ;
+		nameColumn.setMinWidth(100);
+		nameColumn.setCellValueFactory(
+	                new PropertyValueFactory<PatronTableModel, String>("name"));
 		
-		TableColumn bookTitleColumn = new TableColumn("Title") ;
-		bookTitleColumn.setMinWidth(100);
-		bookTitleColumn.setCellValueFactory(
-	                new PropertyValueFactory<BookTableModel, String>("bookTitle"));
+		TableColumn addressColumn = new TableColumn("Address") ;
+		addressColumn.setMinWidth(100);
+		addressColumn.setCellValueFactory(
+	                new PropertyValueFactory<PatronTableModel, String>("address"));
 		  
-		TableColumn pubYearColumn = new TableColumn("Publication Year") ;
-		pubYearColumn.setMinWidth(100);
-		pubYearColumn.setCellValueFactory(
-	                new PropertyValueFactory<BookTableModel, String>("pubYear"));
+		TableColumn cityColumn = new TableColumn("City") ;
+		cityColumn.setMinWidth(100);
+		cityColumn.setCellValueFactory(
+	                new PropertyValueFactory<PatronTableModel, String>("city"));
 
-		TableColumn statusColumn = new TableColumn("Status") ;
+		TableColumn stateCodeColumn = new TableColumn("State Code") ;
+		stateCodeColumn.setMinWidth(100);
+		stateCodeColumn.setCellValueFactory(
+					new PropertyValueFactory<PatronTableModel, String>("stateCode"));
+
+        TableColumn zipColumn = new TableColumn("Zip") ;
+        zipColumn.setMinWidth(100);
+        zipColumn.setCellValueFactory(
+                    new PropertyValueFactory<PatronTableModel, String>("zip"));
+
+        TableColumn emailColumn = new TableColumn("Email") ;
+        emailColumn.setMinWidth(100);
+        emailColumn.setCellValueFactory(
+                    new PropertyValueFactory<PatronTableModel, String>("email"));
+
+        TableColumn dateOfBirthColumn = new TableColumn("Date of Birth") ;
+        dateOfBirthColumn.setMinWidth(100);
+        dateOfBirthColumn.setCellValueFactory(
+                    new PropertyValueFactory<PatronTableModel, String>("dateOfBirth"));
+            
+        TableColumn statusColumn = new TableColumn("Status") ;
 		statusColumn.setMinWidth(100);
 		statusColumn.setCellValueFactory(
-					new PropertyValueFactory<BookTableModel, String>("status"));
+					new PropertyValueFactory<PatronTableModel, String>("status"));
 
-		tableOfBooks.getColumns().addAll(bookIdColumn, authorColumn, bookTitleColumn, pubYearColumn, statusColumn);
+        tableOfPatrons.getColumns().addAll(patronIdColumn, nameColumn, addressColumn, cityColumn, statusColumn);
 
-		// tableOfBooks.setOnMousePressed(new EventHandler<MouseEvent>() {
+		// tableOfPatrons.setOnMousePressed(new EventHandler<MouseEvent>() {
 		// 	@Override
 		// 	public void handle(MouseEvent event)
 		// 	{
 		// 		if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
-		// 			processBookSelected();
+		// 			processPatronSelected();
 		// 		}
 		// 	}
 		// });
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setPrefSize(115, 150);
-		scrollPane.setContent(tableOfBooks);
+		scrollPane.setContent(tableOfPatrons);
 
 		submitButton = new Button("Submit");
  		// submitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -192,7 +210,7 @@ public class BookCollectionView extends View
        	// 	     public void handle(ActionEvent e) {
        	// 	     	clearErrorMessage(); 
 		// 			// do the inquiry
-		// 			processBookSelected();
+		// 			processPatronSelected();
 					
         //     	 }
         // 	});
@@ -211,7 +229,7 @@ public class BookCollectionView extends View
 			 		*/
 					//----------------------------------------------------------
        		     	clearErrorMessage();
-       		     	myModel.stateChangeRequest("CancelBookCollection", null); 
+       		     	myModel.stateChangeRequest("CancelPatronCollection", null); 
             	  }
         	});
 
@@ -235,15 +253,15 @@ public class BookCollectionView extends View
 	}
 
 	//--------------------------------------------------------------------------
-	protected void processBookSelected()
+	protected void processPatronSelected()
 	{
-		BookTableModel selectedItem = tableOfBooks.getSelectionModel().getSelectedItem();
+		PatronTableModel selectedItem = tableOfPatrons.getSelectionModel().getSelectedItem();
 		
 		if(selectedItem != null)
 		{
-			String selectedBookId = selectedItem.getBookId();
+			String selectedPatronId = selectedItem.getPatronId();
 
-			myModel.stateChangeRequest("BookSelected", selectedBookId);
+			myModel.stateChangeRequest("PatronSelected", selectedPatronId);
 		}
 	}
 
@@ -279,7 +297,7 @@ public class BookCollectionView extends View
 	{
 		if(click.getClickCount() >= 2)
 		{
-			processBookSelected();
+			processPatronSelected();
 		}
 	}
    */

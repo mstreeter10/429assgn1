@@ -32,11 +32,6 @@ import impresario.IModel;
 public class LibrarianView extends View
 {
 
-	// GUI stuff
-	private TextField userid;
-	private PasswordField password;
-	private Button submitButton;
-
 	// For showing error message
 	private MessageView statusLog;
 
@@ -63,7 +58,6 @@ public class LibrarianView extends View
 
 		getChildren().add(container);
 
-		System.out.println("populate");
 		populateFields();
 
 		// STEP 0: Be sure you tell your model what keys you are interested in
@@ -99,13 +93,20 @@ public class LibrarianView extends View
 		Button searchBooksButton = new Button("Search Books");
 		Button searchPatronsButton = new Button("Search Patrons");
 		Button doneButton = new Button("Done");
- 		doneButton.setOnAction(new EventHandler<ActionEvent>() {
 
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	processAction(e);    
-            	     }
-        	});
+ 		searchBooksButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent e) {
+				processSearchBooks(e);    
+			}
+		});
+
+		searchPatronsButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+			processSearchPatrons(e);    
+		}
+	});
 
 		VBox btnContainer = new VBox(10);
 		btnContainer.getChildren().addAll(insertBookButton, insertPatronButton, searchBooksButton, searchPatronsButton, doneButton);
@@ -137,44 +138,20 @@ public class LibrarianView extends View
 	// This method processes events generated from our GUI components.
 	// Make the ActionListeners delegate to this method
 	//-------------------------------------------------------------
-	public void processAction(Event evt)
+	public void processSearchBooks(Event evt)
 	{
-		// // DEBUG: System.out.println("LibrarianView.actionPerformed()");
-
-		// clearErrorMessage();
-
-		// String useridEntered = userid.getText();
-
-		// if ((useridEntered == null) || (useridEntered.length() == 0))
-		// {
-		// 	displayErrorMessage("Please enter a user id!");
-		// 	userid.requestFocus();
-		// }
-		// else
-		// {
-		// 	String passwordEntered = password.getText();
-		// 	processUserIDAndPassword(useridEntered, passwordEntered);
-		// }
+		clearErrorMessage();
+		Properties props = new Properties();
+		myModel.stateChangeRequest("SearchBooks", props);
 
 	}
 
-	/**
-	 * Process userid and pwd supplied when Submit button is hit.
-	 * Action is to pass this info on to the librarian object
-	 */
-	//----------------------------------------------------------
-	private void processUserIDAndPassword(String useridString,
-		String passwordString)
+	public void processSearchPatrons(Event evt)
 	{
+		clearErrorMessage();
 		Properties props = new Properties();
-		props.setProperty("ID", useridString);
-		props.setProperty("Password", passwordString);
+		myModel.stateChangeRequest("SearchPatrons", props);
 
-		// clear fields for next time around
-		userid.setText("");
-		password.setText("");
-
-		myModel.stateChangeRequest("Login", props);
 	}
 
 	//---------------------------------------------------------

@@ -121,7 +121,7 @@ public class Book extends EntityBase
 				// insert
 				Integer accountNumber = insertAutoIncrementalPersistentState(mySchema, persistentState);
 				persistentState.setProperty("bookId", "" + accountNumber.intValue());
-				updateStatusMessage = "Book data for new book : " +  persistentState.getProperty("bookTitle") + " installed successfully in database!";
+				updateStatusMessage = "Book data for new book : " +  persistentState.getProperty("Booktitle") + " installed successfully in database!";
 			}
 		}
 		catch (SQLException ex)
@@ -138,6 +138,23 @@ public class Book extends EntityBase
 	public String toString()
 	{
 		return persistentState.toString();
+	}
+
+	public Vector<String> getEntryListView()
+	{
+		Vector<String> v = new Vector<String>();
+
+		// System.out.println("state");
+		// System.out.println(persistentState.toString());
+		// System.out.println(persistentState.getProperty("bookId"));
+
+		v.addElement(persistentState.getProperty("bookId"));
+		v.addElement(persistentState.getProperty("author"));
+		v.addElement(persistentState.getProperty("bookTitle"));
+		v.addElement(persistentState.getProperty("pubYear"));
+		v.addElement(persistentState.getProperty("status"));
+
+		return v;
 	}
 
 	protected void initializeSchema(String tableName)

@@ -34,10 +34,9 @@ public class BookView extends View
 {
 
 	// GUI components
-	protected TextField accountNumber;
-	protected TextField acctType;
-	protected TextField balance;
-	protected TextField serviceCharge;
+	protected TextField author;
+	protected TextField title;
+	protected TextField publicationYear;
 
 	protected Button cancelButton;
 
@@ -48,7 +47,7 @@ public class BookView extends View
 	//----------------------------------------------------------
 	public BookView(IModel account)
 	{
-		super(account, "AccountView");
+		super(account, "BookView");
 
 		// create a container for showing the contents
 		VBox container = new VBox(10);
@@ -66,7 +65,6 @@ public class BookView extends View
 
 		populateFields();
 
-		myModel.subscribe("ServiceCharge", this);
 		myModel.subscribe("UpdateStatusMessage", this);
 	}
 
@@ -78,7 +76,7 @@ public class BookView extends View
 		HBox container = new HBox();
 		container.setAlignment(Pos.CENTER);	
 
-		Text titleText = new Text(" Brockport Bank ATM ");
+		Text titleText = new Text(" Brockport Library ");
 		titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		titleText.setWrappingWidth(300);
 		titleText.setTextAlignment(TextAlignment.CENTER);
@@ -100,60 +98,60 @@ public class BookView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         
-        Text prompt = new Text("ACCOUNT INFORMATION");
+        Text prompt = new Text("BOOK INFORMATION");
         prompt.setWrappingWidth(400);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-		Text accNumLabel = new Text(" Account Number : ");
+		Text authorLabel = new Text(" Author : ");
 		Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
-		accNumLabel.setFont(myFont);
-		accNumLabel.setWrappingWidth(150);
-		accNumLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(accNumLabel, 0, 1);
+		authorLabel.setFont(myFont);
+		authorLabel.setWrappingWidth(150);
+		authorLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(authorLabel, 0, 1);
 
-		accountNumber = new TextField();
-		accountNumber.setEditable(false);
-		grid.add(accountNumber, 1, 1);
+		author = new TextField();
+		author.setEditable(false);
+		grid.add(author, 1, 1);
 
-		Text acctTypeLabel = new Text(" Account Type : ");
-		acctTypeLabel.setFont(myFont);
-		acctTypeLabel.setWrappingWidth(150);
-		acctTypeLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(acctTypeLabel, 0, 2);
+		Text titleLabel = new Text(" Title : ");
+		titleLabel.setFont(myFont);
+		titleLabel.setWrappingWidth(150);
+		titleLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(titleLabel, 0, 2);
 
-		acctType = new TextField();
-		acctType.setEditable(false);
-		grid.add(acctType, 1, 2);
+		title = new TextField();
+		title.setEditable(false);
+		grid.add(title, 1, 2);
 
-		Text balLabel = new Text(" Account Balance : ");
-		balLabel.setFont(myFont);
-		balLabel.setWrappingWidth(150);
-		balLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(balLabel, 0, 3);
+		Text publicationYearLabel = new Text(" Publication Year : ");
+		publicationYearLabel.setFont(myFont);
+		publicationYearLabel.setWrappingWidth(150);
+		publicationYearLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(publicationYearLabel, 0, 3);
 
-		balance = new TextField();
-		balance.setEditable(false);
-		grid.add(balance, 1, 3);
+		publicationYear = new TextField();
+		publicationYear.setEditable(false);
+		grid.add(publicationYear, 1, 3);
 
-		Text scLabel = new Text(" Service Charge : ");
-		scLabel.setFont(myFont);
-		scLabel.setWrappingWidth(150);
-		scLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(scLabel, 0, 4);
+		// Text scLabel = new Text(" Service Charge : ");
+		// scLabel.setFont(myFont);
+		// scLabel.setWrappingWidth(150);
+		// scLabel.setTextAlignment(TextAlignment.RIGHT);
+		// grid.add(scLabel, 0, 4);
 
-		serviceCharge = new TextField();
-		serviceCharge.setEditable(true);
-		serviceCharge.setOnAction(new EventHandler<ActionEvent>() {
+		// serviceCharge = new TextField();
+		// serviceCharge.setEditable(true);
+		// serviceCharge.setOnAction(new EventHandler<ActionEvent>() {
 
-  		     @Override
-  		     public void handle(ActionEvent e) {
-  		    	clearErrorMessage();
-  		    	myModel.stateChangeRequest("ServiceCharge", serviceCharge.getText());
-       	     }
-        });
-		grid.add(serviceCharge, 1, 4);
+  		//      @Override
+  		//      public void handle(ActionEvent e) {
+  		//     	clearErrorMessage();
+  		//     	myModel.stateChangeRequest("ServiceCharge", serviceCharge.getText());
+       	//      }
+        // });
+		// grid.add(serviceCharge, 1, 4);
 
 		HBox doneCont = new HBox(10);
 		doneCont.setAlignment(Pos.CENTER);
@@ -164,7 +162,7 @@ public class BookView extends View
        		     @Override
        		     public void handle(ActionEvent e) {
        		    	clearErrorMessage();
-       		    	myModel.stateChangeRequest("AccountCancelled", null);   
+       		    	myModel.stateChangeRequest("BookCancelled", null);   
             	  }
         	});
 		doneCont.getChildren().add(cancelButton);
@@ -188,10 +186,9 @@ public class BookView extends View
 	//-------------------------------------------------------------
 	public void populateFields()
 	{
-		accountNumber.setText((String)myModel.getState("AccountNumber"));
-		acctType.setText((String)myModel.getState("Type"));
-		balance.setText((String)myModel.getState("Balance"));
-	 	serviceCharge.setText((String)myModel.getState("ServiceCharge"));
+		author.setText((String)myModel.getState("author"));
+		title.setText((String)myModel.getState("title"));
+		publicationYear.setText((String)myModel.getState("pubYear"));
 	}
 
 	/**
@@ -201,13 +198,6 @@ public class BookView extends View
 	public void updateState(String key, Object value)
 	{
 		clearErrorMessage();
-
-		if (key.equals("ServiceCharge") == true)
-		{
-			String val = (String)value;
-			serviceCharge.setText(val);
-			displayMessage("Service Charge Imposed: $ " + val);
-		}
 	}
 
 	/**

@@ -140,6 +140,23 @@ public class Patron extends EntityBase
 		return persistentState.toString();
 	}
 
+	public Vector<String> getEntryListView()
+	{
+		Vector<String> v = new Vector<String>();
+
+		v.addElement(persistentState.getProperty("patronId"));
+		v.addElement(persistentState.getProperty("name"));
+		v.addElement(persistentState.getProperty("address"));
+		v.addElement(persistentState.getProperty("city"));
+		v.addElement(persistentState.getProperty("stateCode"));
+		v.addElement(persistentState.getProperty("zip"));
+		v.addElement(persistentState.getProperty("email"));
+		v.addElement(persistentState.getProperty("dateOfBirth"));
+		v.addElement(persistentState.getProperty("status"));
+
+		return v;
+	}
+
 	protected void initializeSchema(String tableName)
 	{
 		if (mySchema == null)
